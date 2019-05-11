@@ -11,6 +11,12 @@ type person struct {
 	Age       int
 }
 
+// type person struct {
+// 	FirstName string `json:"first_name"`
+// 	LastName  string `json:"last_name"`
+// 	Age       int    `json:"age"`
+// }
+
 func main() {
 	p1 := person{
 		FirstName: "John",
