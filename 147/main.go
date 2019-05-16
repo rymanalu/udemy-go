@@ -4,28 +4,23 @@ import (
 	"fmt"
 	"runtime"
 	"sync"
+	"sync/atomic"
 )
 
 func main() {
-	// Race condition (Mutex)
+	// Race condition (Atomic)
 	fmt.Println("CPUs:", runtime.NumCPU())
 	fmt.Println("Goroutines:", runtime.NumGoroutine())
 
-	counter := 0
+	var counter int64
 	const gs = 100
 	var wg sync.WaitGroup
 	wg.Add(gs)
 
-	var mtx sync.Mutex
-
 	for i := 0; i < gs; i++ {
 		go func() {
-			mtx.Lock()
-			v := counter
+			atomic.AddInt64(&counter, 1)
 			runtime.Gosched()
-			v++
-			counter = v
-			mtx.Unlock()
 			wg.Done()
 		}()
 	}
